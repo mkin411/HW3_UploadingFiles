@@ -12,3 +12,4 @@ d8<-read.csv("Aurelia_")
 
 
 #loadingIIS
+#aver
