@@ -28,4 +28,32 @@ s5
 s6<-load("aurelia_15minCell_statareas.Rdata")
 s6
 head(a)
+s7<-read_csv(file ="aurelia_15minCell_statareas.txt")
+s7
+s8<-read_csv(file = "ENVREC (1).csv")
+s8
+
+#OtherFiles
+s9<-read_csv(file = "STAREC_rev20190402.csv")
+s9
+s10<-read_csv("INGEST_DATA.csv")
+s10
+s11<-read_csv("NEWBIOCODESBIG.csv")
+s11
+s12<-read_csv("SHRREC.csv")
+s12
+s13<-read_csv("CTDCASTREC.csv")
+s13
+s14<-read_csv("INVREC.csv")
+s14
+s15<-read_csv("ISTREC.csv")
+s15
+s16<-read_csv("VESSELS.csv")
+s16
+s17<-read_csv("CTDREC.csv")
+s17
+s18<-read_csv("BGSREC(1).csv")
+s18
+s19<-read_csv("CRUISES.csv")
+s19
 
