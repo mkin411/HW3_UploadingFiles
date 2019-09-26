@@ -56,8 +56,8 @@ s18<-read_csv("BGSREC(1).csv")
 s18
 s19<-read_csv("CRUISES.csv")
 s19
-#s20<-read_csv("GLFREC.csv")
-#s20
+s20<-read_csv("GLFREC.csv")
+s20
 s21<-read_xlsx("NameTranslator_table20140330.xlsx")
 s21
 s22<-read_xlsx("transect_towtime.xlsx")
