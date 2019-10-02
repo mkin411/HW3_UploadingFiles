@@ -76,3 +76,12 @@ vc
 #repeating less because of shift in range
 #subsetting, merging, cut 
 
+#2 october 2019
+#review of subsetting
+#summarize data
+library(tidyverse)
+install.packages("nutshell")
+library(nutshell)
+data("batting.2008")
+d <- batting.2008
+head(d)
