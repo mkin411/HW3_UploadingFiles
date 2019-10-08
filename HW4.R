@@ -64,24 +64,38 @@ head(transect.id.name.2)
 #for each transect and assign the outcome to an object.
 library(tidyverse)
 library(dplyr)
-mean.parcel = fs %>% group_by(parcel.density.m3) %>% summarise(n(mean))
+mean.parcel = fs %>% group_by(transect.id)%>% summarise(pdmean = mean(parcel.density.m3))
 head(mean.parcel)
 #10. Convert the object to a data frame
-
-
+mean.parcel.df<-as.data.frame(mean.parcel)
+mean.parcel.df
 #11. Rename the column with the density values to something more descriptive.
-
-
+colnames(mean.parcel.df)<-"parcel.density.mean"
+colnames(mean.parcel.df)
+head(mean.parcel.df)
+#how do you make it the second not the first?
 #12. Assign the row names of the data frame to be the values in a new field “transect”.
-
-
+transect.4<-rownames(mean.parcel.df)
+transect.4
+#why am I not gettng the same numbers as number 4
 #13. Repeat the above steps, but this time using the tapply function to find the standard deviation of
 #‘parcel.density.m3’.
-
+#how is this different than #5??
+ts.3<- tapply(X = fs$parcel.density.m3, INDEX = list(fs$transect.id), FUN = sd)
+head (ts.3)
+ts.3.df<-as.data.frame(ts.3)
+ts.3.df
+nrow(ts.3.df)
+colnames(ts.3.df)<-"parcel.density.sd"
+transect.5 <-rownames(ts.3.df)
+transect.5
 
 #14. Using the join function (tidyverse package), combine the data frames with the mean and standard
 #deviation to create one, new data frame that has three columns (mean density, sd
 #density, transect)
+install.packages(tidyverse)
+library(join)
+join.fs<-join(c(transect.4, ts.3.df), ts.3, by = NULL, type = "left", match = "all")
 
 
 #15. Repeat the above steps, but this time using the tapply function to find the count of observations for
@@ -95,4 +109,6 @@ head(mean.parcel)
 #Free style
 #17. Select an 2 fields (e.g. area, depth, year, transect) in the fish_data.Rdata to group by. Find the minimum,
 #lower 95%, median, mean, upper 95%, and maximum values for parcel.length.m.
+f.length<-tapply(X = fs$parcel.length.m, INDEX =list(fs$transect.id), FUN = fivenum)
+f.length
 
