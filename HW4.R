@@ -12,14 +12,32 @@ str(fs$transect.id)
 #to an object.
 ts.1<- tapply(X = fs$parcel.density.m3, INDEX = list(fs$transect.id), FUN = mean)
 ts.1
-ts.1$rownames <- 1:39
+head(ts.1)
+str(ts.1)
+nrow(ts.1)
 #2. Convert the object to a data frame
 ts.1.df<-as.data.frame(ts.1)
 ts.1.df
 ts.1.df$rownames <- 1:39
-#all data frames need to be assigned to 1:39 in order to merge
+names(ts.1.df)
+unlist(ts.1)
+fd<- data.frame(transect.id = names(ts.1), parcel.density.mean=ts.1)
+head(fd)
+str(fd)
+fd[,1]<-NULL
+str(fd)
+head(fd)
+fs.d.f<-aggregate(x = list(mean.parcel=fs$parcel.density.m3), by= list(tid=fs$transect.id), FUN = mean)
+head(fs.d.f)
+library(tidyverse)
+rename(fs.d.f,transect.id=tid)
+#another way of creating 
+#re-did based on aggregate
+#tapply makes a matrix; organized differently as data frames
+#output colm
+
 #3. Rename the column with the density values to something more descriptive.
-colnames(ts.1.df)<-"parcel.density.mean"
+colnames(ts.1.df)<-c("parcel.density.mean", "rownames")
 colnames(ts.1.df)
 str(ts.1.df)
 #4. Assign the row names of the data frame to be the values in a new field “transect”.
@@ -31,22 +49,22 @@ transect
 transect.2 <-rownames(ts.1.df)
 transect.2
 transect.2$rownames <- 1:39
-
 #all data frames need to be assigned to 1:39 in order to merge
 #5. Repeat the above steps, but this time using the tapply function to find the standard deviation of
 #‘parcel.density.m3’.
 ts.2<- tapply(X = fs$parcel.density.m3, INDEX = list(fs$transect.id), FUN = sd)
 head (ts.2)
-ts.2.df<-as.data.frame(ts.2)
-ts.2.df
-ts.2.df$rownames <-1:39
-nrow(ts.2.df)
-colnames(ts.2.df)<-"parcel.density.sd"
-transect.3 <-rownames(ts.2.df)
+#need to re-create dataframe
+fs.d.f.2<-aggregate(x = list(std.parcel=fs$parcel.density.m3), by= list(tid=fs$transect.id), FUN = sd)
+fs.d.f.2
+fs.d.f.2$rownames <-1:39
+nrow(fs.d.f.2)
+colnames(ts.2.df)<-c("parcel.density.sd", "rownames")
+transect.3 <-rownames(fs.d.f.2)
 transect.3
 #6. Using the merge function, combine the data frames with the mean and standard deviation to create
 #one, new data frame that has three columns (mean density, sd density, transect)
-new.df.frame<-merge(transect.2, c(ts.2.df, ts.1.df), by = "rownames")
+new.df.frame<-merge(transect.2, c(fs.d.f, fs.d.f.2), by = "rownames")
 head(new.df.frame)
 nrow(new.df.frame)
 transect.id.name<- rename(.data = new.df.frame, transect.id = x)
@@ -56,10 +74,12 @@ head(transect.id.name)
 library(tidyverse)
 ts.c<- tapply(X = fs$parcel.density.m3, INDEX = list(fs$transect.id), FUN = length)
 ts.c
-#length of is the # of obs
+fs.d.f.3<-aggregate(x = list(std.parcel=fs$parcel.density.m3), by= list(tid=fs$transect.id), FUN = length)
+fs.d.f.3$rownames<-1:39
+#length of is the # of o
 #8. Using the merge function, combine the data frames with the mean and standard deviation to create
 #one, new data frame that has three columns (mean density, sd density, count, and transect).
-new.df.frame.2<-merge(c(transect.2, ts.c), c(ts.2.df, ts.1.df), by = "rownames")
+new.df.frame.2<-merge(c(transect.2, fs.d.f.3), c(fs.d.f, fs.d.f.2), by = "rownames")
 head(new.df.frame.2)
 transect.id.name.2<-rename(.data = new.df.frame.2, transect.id = x)
 head(transect.id.name.2)
@@ -92,6 +112,7 @@ transect.7$rownames <-1:39
 ts.3<- tapply(X = fs$parcel.density.m3, INDEX = list(fs$transect.id), FUN = sd)
 head (ts.3)
 ts.3.df<-as.data.frame(ts.3)
+fs.d.f.3<-aggregate(x = list(.parcel=fs$parcel.density.m3), by= list(tid=fs$transect.id), FUN = sd)
 ts.3.df
 ts.3.df$rownames <-1:39
 nrow(ts.3.df)
@@ -114,7 +135,8 @@ nrow(join.fs)
 ts.4<- tapply(X = fs$parcel.density.m3, INDEX =(fs$transect.id), FUN = length)
 head(ts.4)
 ts.4.df<-as.data.frame(ts.4)
-ts.4.df$rownames <- 1:39
+fs.d.f.4<-aggregate(x = list(.parcel=fs$parcel.density.m3), by= list(tid=fs$transect.id), FUN = length)
+fs.d.f.4$rownames <- 1:39
 transect.7 <- rownames(ts.4.df)
 head(transect.7)
 transect0.7 <- as.data.frame(transect.7)
@@ -127,8 +149,8 @@ head(ts.4.df)
 
 #16. Using the join function, combine the data frames with the mean and standard deviation to create one,
 #new data frame that has three columns (mean density, sd density, count, and transect).
-join.df.2<-merge(ts.4.df, ts.3.df, by="rownames")
-join.df.3 <-merge(transect0.7, ts.1.df, by ="rownames")
+join.df.2<-merge(fs.d.f, fs.d.f.2, by="rownames")
+join.df.3 <-merge(transect0.7, fs.d.f.3, by ="rownames")
 join.fs <-left_join(x=join.df.3, y= join.df.2, by = "rownames")
 nrow(join.fs)
 head(join.fs)
@@ -138,5 +160,7 @@ head(join.fs)
 #lower 95%, median, mean, upper 95%, and maximum values for parcel.length.m.
 f.length<-tapply(X = fs$parcel.length.m, INDEX =list(fs$transect.id), FUN = fivenum)
 f.length
+
+
 
 
