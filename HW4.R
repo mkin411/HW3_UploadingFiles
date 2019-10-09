@@ -59,7 +59,8 @@ fs.d.f.2<-aggregate(x = list(std.parcel=fs$parcel.density.m3), by= list(tid=fs$t
 fs.d.f.2
 fs.d.f.2$rownames <-1:39
 nrow(fs.d.f.2)
-colnames(ts.2.df)<-c("parcel.density.sd", "rownames")
+fs.d.f.2[,1]<-NULL
+colnames(fs.d.f.2)<-c("parcel.density.sd", "rownames")
 transect.3 <-rownames(fs.d.f.2)
 transect.3
 #6. Using the merge function, combine the data frames with the mean and standard deviation to create
@@ -126,7 +127,8 @@ transect5.1<-as.data.frame(transect.5)
 #deviation to create one, new data frame that has three columns (mean density, sd
 #density, transect)
 library(tidyverse)
-join.df<-merge(ts.1.df,ts.2.df, by = "rownames")
+join.df<-merge(fs.d.f, fs.d.f.2, by = "rownames")
+fs.d.f.2
 join.fs <- left_join(x= transect.5.1, y= join.df, by = "rownames")
 nrow(join.fs)
 
