@@ -139,3 +139,4 @@ head(join.fs)
 f.length<-tapply(X = fs$parcel.length.m, INDEX =list(fs$transect.id), FUN = fivenum)
 f.length
 
+
