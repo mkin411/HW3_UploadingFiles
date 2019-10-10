@@ -1,6 +1,10 @@
 #HW4.R
 #tapply & merge using fish data
 load("fish_data (10).Rdata")
+fs<-fish; rm(fish)
+f<- fs[ ,c ("transect.id", "area_fac", "depth_fac", "parcel.id", "parcel.density.m3", "parcel.length.m")]
+head(fs)
+load("fish_data (10).Rdata")
 library(tidyverse)
 #1. Using the tapply function, find the mean of ‘parcel.density.m3’ for each transect and assign the outcome
 #to an object.
