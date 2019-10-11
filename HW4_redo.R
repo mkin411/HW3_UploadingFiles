@@ -161,3 +161,4 @@ summary(f.s$parcel.id, f.s$transect.id, by=f.s$parcel.length.m)
 #is this way correct? Above? What is this actually doing?
 
 
+
