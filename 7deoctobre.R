@@ -1,5 +1,5 @@
 # 7 de Octobre
-# Next exam- review day wednesday, exam on monday, importing, summarizing, merging, reshaing
+# Next exam- review day wednesday, exam on monday, importing, summarizing, merging, reshaping
 #class: reshape
 load("fish_data (10).Rdata")
 f<-fish; rm(fish)
@@ -58,6 +58,7 @@ o3 <- fs[1,]
 o4 <- fs[2:10,]
 o <- rbind(o1, o2, o3, o4)
 o
+head(o)
 #there are duplicates needed to get rid of 
 #now the first 3 rows are duplicates
 no.dups <- o [!duplicated(o),]
@@ -92,3 +93,5 @@ nd.m.c<-arrange(.data = mtcars, mpg, cyl)
 nd.m.c.desc<-arrange(.data = mtcars, mpg, desc(cyl))
 nd.m.c.desc
 #descending for cyl
+
+
