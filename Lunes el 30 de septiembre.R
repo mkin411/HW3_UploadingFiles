@@ -21,7 +21,7 @@ fd5<- subset(x =ff, depth_fac =="Deep", select = c("transect.id", "area_fac"))
 fd5
 ##filter
 library(dplyr)
-fd6<- filter(.data = f, depth_fac == "Deep")
+fd6<- filter(.data = f, depth_fac == "Deep", perserve = FALSE)
 #Which
 fd7<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"), ]
 #fd6 <- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East", ff$yr_fac == "2014")
@@ -30,7 +30,7 @@ d1<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"),]
 d2<- ff[which(ff$depth_fac == 'Shallow' & ff$area_fac == "West"), ]
 #combine d1 and d2
 d3<- rbind(d1, d2)
-d3
+head(d3)
 nrow(d3)
 #combine data frames with seperate columns into a singl data frame
 c1<-subset(x = ff, depth_fac == "Deep", select = c("transect.id", "area_fac"))
@@ -165,4 +165,5 @@ library(reshape2)
 #cast function to change data frame from the long to the wide format
 s.wide<-dcast(data= s, value.var = "HR",formula = "lgID" ~"teamID" ,fun.aggregate = mean)
 str(s.wide)
+
 
