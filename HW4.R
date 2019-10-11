@@ -139,7 +139,7 @@ nrow(wow)
 #Free style
 #17. Select an 2 fields (e.g. area, depth, year, transect) in the fish_data.Rdata to group by. Find the minimum,
 #lower 95%, median, mean, upper 95%, and maximum values for parcel.length.m.
-length6.1 <- f %>% group_by(f$transect.id, f$parcel.id) %>% summarise(min = min(f$parcel.length.m),low95 = quantile(f$parcel.length.m,0.95),median =median(f$parcel.length.m), up95 = (quantile(f$parcel.length.m,1)-quantile(f$parcel.length.m,0.95)),max = max(f$parcel.length.m) )
+length6.1 <- f %>% group_by(f$transect.id, f$parcel.id) %>% summarise(min = min(f$parcel.length.m),low95 = quantile(f$parcel.length.m,0.95),median =median(f$parcel.length.m), up95 = (quantile(f$parcel.length.m,1)-quantile(f$parcel.length.m,0.95)),max = max(f$parcel.length.m))
 
 head(length6.1)
 
