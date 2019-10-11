@@ -4,6 +4,7 @@ library(tidyverse)
 cf<-load("fish_data (10).Rdata")
 fs<-fish; rm(fish)
 f.s<- fs[ ,c ("transect.id", "area_fac", "depth_fac", "parcel.id", "parcel.density.m3", "parcel.length.m")]
+#how does the function above work and not the line 4?, specifically seperating?
 
 #1. Using the tapply function, find the mean of ‘parcel.density.m3’ for each transect and assign the outcome
 #to an object.
@@ -143,7 +144,7 @@ head(dr.join)
 nrow(dr.join)
 
 
-17. Select an 2 fields (e.g. area, depth, year, transect) in the fish_data.Rdata to group by. Find the minimum,
+#17. Select an 2 fields (e.g. area, depth, year, transect) in the fish_data.Rdata to group by. Find the minimum,
 #lower 95%, median, mean, upper 95%, and maximum values for parcel.length.m.
 #review this question
 #one way below
