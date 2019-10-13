@@ -24,8 +24,9 @@ library(reshape2)
 #using the melt (reshape2) to change your data
 #data frame from wide to long
 #?melt----categorical 
+head(fs)
 fs.melt <-melt(data = fs, id.vars = c("tid", "parcel.id", "area_fac", "depth_fac"), measure.vars = c("parcel.length.m", "parcel.length.m"), value.name = c("numbers"))
-fs.melt
+head(fs.melt)
 fs.m$variable <-as.character(fs.m$variable)
 ?dcast
 #using dcast function to transform your data from long to wide 
