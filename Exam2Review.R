@@ -63,19 +63,63 @@ read_xlsx("Aurelia_SEAMAP_2012-2018_30minCell.xlsx")
 
 #only need to use the load function when the document is already in .Rdata
 #time questions (9-11)
-vf<-read.table(file='ISIIS201405291242.txt', sep="\t", skip=10, header = TRUE, fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE, quote = "\"", check.names = FALSE, encoding = "UTF-8", na.strings = "9999.99")
-date<-scan(file = 'ISIIS201405291242.txt', what = "character",skip = 1, nlines = 1, quiet = TRUE)
+library(stringr)
+vf<-read.table(file='ISIIS201405281124.txt', sep="\t", skip=10, header = TRUE, fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE, quote = "\"", check.names = FALSE, encoding = "UTF-8", na.strings = "9999.99")
+#"\t" tab deliminated #string as factors are false dont want it to be factor data 
+date<-scan(file = 'ISIIS201405281124.txt', what = "character",skip = 1, nlines = 1, quiet = TRUE)
 #need to load file onto Hw2
+#scan finds specific row and section inhich you want to pull out the data 
+#quiet equals true, stringr- R is going to remove spaces
+head(vf)
+date
+#?str_sub, need to have a start and an end
+date[2]->date4
+date4
+#using str_sub, type date
+date4
+day<-str_sub(string =date4, start =4, end=5 )
+day
+month<-str_sub(string= date4, start=1, end =2)
+month
+year<-str_sub(string=date4, start = 7, end = 8)
+year
+
+newdate<-str_c(day, month, year, sep = "/")
+newdate
+
+dd<-as.numeric(day)
+datenextday<-str_c(month, as.character(dd+1), year, sep = "/")
+datenextday
+#time from data set skip 11 lines 
+vf$Time<-as.numeric(str_sub(vf$Time, 1, 2))
+vf$Time
+vf<-read.table(file='ISIIS201405281124.txt', sep="\t", skip=10, header = TRUE, fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE, quote = "\"", check.names = FALSE, encoding = "UTF-8", na.strings = "9999.99")
+head(vf)
+library(stringr)
+vf$hour<-as.numeric(str_sub(vf$Time, start = 1, end = 2))
+head(vf$hour)
+vf$mins<-as.numeric(str_sub(vf$Time, start = 4, end = 5))
+head(vf$mins)
+vf$seconds<-as.numeric(str_sub(vf$Time, start=7, end = 11))
+head(vf$seconds)
+vf$seconds.df<-as.data.frame(vf$seconds)
+head(vf$seconds.df)
+vf$seconds.neg<-as.numeric(str_sub(vf$Time, start = -5, end = -1))
+vf$seconds.neg
+head(vf)
+vf$date<-date4
+vf$time<-str_c(vf$hour, vf$mins,vf$seconds, sep=":")
+head(vf)
+vf$dateTime<-(str_c(vf$date, vf$time, sep = " "))
+head(vf$dateTime)
+#do not run it as.numeric, leave it as a string
+vf$dateTime<-as.POSIXct(strptime(x=vf$dateTime, format = "%m/%d/%y %H:%M:%S", tz="America/New_York"))
+#strptime, takes column tells you colns time information follow the format
+vf$dateTime<-(str_c(vf$date, vf$time, sep = " "))
+vf$dateTime.panama<-as.POSIXct(strptime(x=(vf$dateTime), format = "%m/%d/%y %H:%M:%S", tz="America/Panama"))
 
 
-
-
-
-
-
-
-
-
+#str_c combines those three seperate dat
 
 #melt and cast (11-1)
 #under library(reshape2)
@@ -189,6 +233,8 @@ head(merge.f.2)
 #?filter
 
               
+
+
               
 #6-9 review all data above, and redo the HW4 if time? otherwise finish on Monday
 
