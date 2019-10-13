@@ -5,28 +5,40 @@ ff<- fish
 #subsetting
 fd<-ff[ff$depth_fac == "Deep", ]
 fd2<- subset (x = ff, depth_fac == "Deep")
-fd2
+head(fd2)
 
 #subset shallow tows
 fd2<- subset (x = ff, depth_fac == "shallow tows")
 fd22<-f[ff$tow.depth == "shallow tows"]
 fd22
+#says character 0
 #east
 #fd3 <-subse (x = ff, depth_fac == "east")
 fd33<-fd22<-f[ff$parcel.end.lat == "east"]
+head(fd33)
+#says character 0
 #patches
 fd4<-subset(x = ff, depth_fac == "patches")
+head(fd4)
 #selecting area
 fd5<- subset(x =ff, depth_fac =="Deep", select = c("transect.id", "area_fac"))
 fd5
+head(fd5)
 ##filter
+#what is this doing- x= dataset, depth_fac == "Deep"; labeling all deep_fac as deep, 
+#select is isolating those columns
+
+
 library(dplyr)
+f.d6<-filter(.data = f, depth_fac == "Deep", preserve= FALSE)
+fd6.1<-filter(.data = f, depth_fac == "Deep", preserve = FALSE)
 fd6<- filter(.data = f, depth_fac == "Deep", perserve = FALSE)
 #Which
 fd7<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"), ]
-#fd6 <- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East", ff$yr_fac == "2014")
+fd6 <- ff[,which(ff$depth_fac == 'Deep' & ff$area_fac == "East", ff$yr_fac == "2014")]
  #subsetting and then combine using rowbinf (rbind function)
 d1<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"),]
+#Isolated depth fac and area fac in data set to create new values
 d2<- ff[which(ff$depth_fac == 'Shallow' & ff$area_fac == "West"), ]
 #combine d1 and d2
 d3<- rbind(d1, d2)
@@ -36,7 +48,8 @@ nrow(d3)
 c1<-subset(x = ff, depth_fac == "Deep", select = c("transect.id", "area_fac"))
 #que es la problema?
 c2<- subset (x = ff, depth_fac == "Deep", select = c("depth_fac", "parcel.length.m", "group"))
-#c3<-cbind(c1, c2)
+c3<-cbind(c1, c2)
+head(c3)
 #merging two data frames, ensuring that observations from one data frame are connected with 
 #observation in the second data frame correctly
 m1<- subset (x = ff, depth_fac == "Deep", select = c("transect.id", "area_fac"))
@@ -165,5 +178,6 @@ library(reshape2)
 #cast function to change data frame from the long to the wide format
 s.wide<-dcast(data= s, value.var = "HR",formula = "lgID" ~"teamID" ,fun.aggregate = mean)
 str(s.wide)
+
 
 
