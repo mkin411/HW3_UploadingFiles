@@ -81,8 +81,13 @@ date<-scan(file = 'ISIIS201405291242.txt', what = "character",skip = 1, nlines =
 #under library(reshape2)
 #melt goes from wide to long
 #dcast goes from long to wide (1)
+#The melt and dcast functions for data.tables are for 
+#reshaping wide-to-long and long-to-wide, respectively;
+#the implementations are specifically designed with large 
+#in-memory data (e.g. 10Gb) in mind.
 #review
 head(fs)
+library(reshape2)
 fs.melt <-melt(data = fs, id.vars = c("tid", "parcel.id", "area_fac", "depth_fac"), measure.vars = c("parcel.length.m", "parcel.length.m"), value.name = c("numbers"))
 #melt(data= data frame, id.vars= c("isolate qualitative data"), measure.vars = c("qualitative data"), value.name= name the column that you want to associate with that
 head(fs.melt)
@@ -90,14 +95,14 @@ fs.m$variable <-as.character(fs.m$variable)
 ?dcast
 #using dcast function to transform your data from long to wide 
 fs.cast <- dcast(data = fs.melt, formula = tid~variable, value.var = c("numbers"), fun.aggregate = mean)
+f.cast<-dcast(data = fs.melt, formula = parcel.id~variable, value.var = c("numbers"), fun.aggregate = mean)
 #keep transect, keep variable, return to me the mean of each transect
 fs.cast
 head(fs.cast)
 names(fs.melt)
+head(f.cast)
 #dcast can find the function of the variable that you isolate, it finds the function 
 #using fun.aggregate and then puts the format back into wide rather than long
-#like melt does
-
 
 #duplicate and removing duplicates() (2-3?)
 
@@ -107,7 +112,21 @@ names(fs.melt)
 
 #assec and descend(1) (3-4)
 #arrange function
-
+attach(mtcars)
+#sort by mpg, order and range
+nd <- mtcars [order(mpg), ]
+nd
+#largest to smallest in mpg
+#uaing the arrange function
+nd.arrange <-arrange(.data = mtcars, mpg)
+nd.arrange
+#creates the same
+nd.arrange.desc<-arrange(.data = mtcars, desc(mpg))
+nd.arrange.desc
+nd.m.c<-arrange(.data = mtcars, mpg, cyl)
+nd.m.c.desc<-arrange(.data = mtcars, mpg, desc(cyl))
+nd.m.c.desc
+#descending for cyl
 
 
 #
@@ -172,5 +191,6 @@ head(merge.f.2)
               
               
 #6-9 review all data above, and redo the HW4 if time? otherwise finish on Monday
+
 
 
