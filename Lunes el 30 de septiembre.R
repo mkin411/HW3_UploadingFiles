@@ -30,14 +30,20 @@ head(fd5)
 
 
 library(dplyr)
-f.d6<-filter(.data = f, depth_fac == "Deep", preserve= FALSE)
-fd6.1<-filter(.data = f, depth_fac == "Deep", preserve = FALSE)
-fd6<- filter(.data = f, depth_fac == "Deep", perserve = FALSE)
+f.d6<-filter(.data = f, depth_fac == "Deep")
+f.d6
+head(f.d6)
+fd6.1<-filter(.data = f, depth_fac == "Deep")
+fd6<- filter(.data = f, depth_fac == "Deep")
 #Which
-fd7<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"), ]
-fd6 <- ff[,which(ff$depth_fac == 'Deep' & ff$area_fac == "East", ff$yr_fac == "2014")]
- #subsetting and then combine using rowbinf (rbind function)
+fd7<- ff[which(ff$depth_fac == "Deep" & ff$area_fac == "East"), ]
+head(fd7)
+
+fd6 <- ff[which(ff$depth_fac == "Deep" & ff$area_fac == "East" & ff$yr_fac == "2014"),]
+head(fd6)
+#subsetting and then combine using rowbinf (rbind function)
 d1<- ff[which(ff$depth_fac == 'Deep' & ff$area_fac == "East"),]
+head(d1)
 #Isolated depth fac and area fac in data set to create new values
 d2<- ff[which(ff$depth_fac == 'Shallow' & ff$area_fac == "West"), ]
 #combine d1 and d2
@@ -46,10 +52,11 @@ head(d3)
 nrow(d3)
 #combine data frames with seperate columns into a singl data frame
 c1<-subset(x = ff, depth_fac == "Deep", select = c("transect.id", "area_fac"))
-#que es la problema?
+#que es el problema?
 c2<- subset (x = ff, depth_fac == "Deep", select = c("depth_fac", "parcel.length.m", "group"))
 c3<-cbind(c1, c2)
 head(c3)
+c4<-rbind(c1, c2)
 #merging two data frames, ensuring that observations from one data frame are connected with 
 #observation in the second data frame correctly
 m1<- subset (x = ff, depth_fac == "Deep", select = c("transect.id", "area_fac"))
@@ -81,9 +88,13 @@ nrow(mt)
 #can not put rows to assign to how many rows you are expected, just using transect.id was repeated so many times, need a unique value to help
 #seq helps align the number to what is should be- specific placement
 m2$seq<-seq(from= 1, to =nrow(m2), by=1)
+head(m2$seq)
+nrow(m2)
 v<-seq(5, 20, 0.5)
+head(v)
 vc<- cut(x=v, breaks =seq(5, 20, 1), include.lowest = T)
-vc
+#cut will create the 
+head(vc)
 #created a seq started at 5 then went to 20,, first to b ones and second be twos in hours, assign that hour identifier to that data
 #cut takes the vector with the breaks, .5-1 as one at a time and include the lowest, and seperate intervals
 #repeating less because of shift in range
@@ -109,6 +120,8 @@ hr
 ## find quantile values for home runs
 #five num gives you min, lower hinge, median, upper-hinge, and max value
 fhr<-tapply(X = d$HR, INDEX = list(d$teamID), FUN = fivenum)
+#instead do group_by under the tidyverse package
+#grpby<-d%>%(teamID)%>%summarise(min=min(HR), low95= quantile(HR, 0.025), median=(median(HR), up95 = quantile(HR, 0.975), max=max(HR)))
 fhr
 #lower hinde and upper hinge 17th and 20th percentiles
 lq.q<-tapply(X = d$H/d$AB, INDEX = list(d$lgID), FUN = fivenum)
@@ -178,6 +191,8 @@ library(reshape2)
 #cast function to change data frame from the long to the wide format
 s.wide<-dcast(data= s, value.var = "HR",formula = "lgID" ~"teamID" ,fun.aggregate = mean)
 str(s.wide)
+
+
 
 
 
