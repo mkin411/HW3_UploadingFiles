@@ -107,7 +107,7 @@ head(vf$seconds.df)
 vf$seconds.neg<-as.numeric(str_sub(vf$Time, start = -5, end = -1))
 vf$seconds.neg
 head(vf)
-vf$date<-date4
+vf$date<-str_c(vf$month, vf$day, vf$year, sep = "/")
 vf$time<-str_c(vf$hour, vf$mins,vf$seconds, sep=":")
 head(vf)
 vf$dateTime<-(str_c(vf$date, vf$time, sep = " "))
@@ -116,8 +116,8 @@ head(vf$dateTime)
 vf$dateTime<-as.POSIXct(strptime(x=vf$dateTime, format = "%m/%d/%y %H:%M:%S", tz="America/New_York"))
 #strptime, takes column tells you colns time information follow the format
 vf$dateTime<-(str_c(vf$date, vf$time, sep = " "))
-vf$dateTime.panama<-as.POSIXct(strptime(x=(vf$dateTime), format = "%m/%d/%y %H:%M:%S", tz="America/Panama"))
-head(vf$dateTime.panama)
+vf$dateTime.met<-as.POSIXct(strptime(x=(vf$dateTime), format = "%m/%d/%y %H:%M:%S", tz="America/Los_Angeles"))
+head(vf$dateTime.met)
 
 #str_c combines those three seperate dat
 
@@ -196,7 +196,7 @@ head(no.dups2)
 #assec and descend(1) (3-4)
 #arrange function
 
-mtcars
+attach(mtcars)
 #sort by mpg, order and range
 nd <- mtcars [order(mpg), ]
 head(nd)
@@ -279,7 +279,7 @@ head(merge.f.2)
 
 
 #filter; also only returns a subset of rows or colms from the dataset
-#fd6.1<-filter(.data = fi, depth_fac == "Deep", preserve == T)
+#fd6.1<-filter(.data = fi, depth_fac == "Deep")
 #?filter
 
               
