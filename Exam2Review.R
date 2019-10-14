@@ -117,7 +117,7 @@ vf$dateTime<-as.POSIXct(strptime(x=vf$dateTime, format = "%m/%d/%y %H:%M:%S", tz
 #strptime, takes column tells you colns time information follow the format
 vf$dateTime<-(str_c(vf$date, vf$time, sep = " "))
 vf$dateTime.panama<-as.POSIXct(strptime(x=(vf$dateTime), format = "%m/%d/%y %H:%M:%S", tz="America/Panama"))
-
+head(vf$dateTime.panama)
 
 #str_c combines those three seperate dat
 
@@ -137,7 +137,8 @@ fs.melt <-melt(data = fs, id.vars = c("tid", "parcel.id", "area_fac", "depth_fac
 head(fs.melt)
 fs.m$variable <-as.character(fs.m$variable)
 ?dcast
-#using dcast function to transform your data from long to wide 
+#using dcast function to transform your data from long to wide
+
 fs.cast <- dcast(data = fs.melt, formula = tid~variable, value.var = c("numbers"), fun.aggregate = mean)
 f.cast<-dcast(data = fs.melt, formula = parcel.id~variable, value.var = c("numbers"), fun.aggregate = mean)
 #keep transect, keep variable, return to me the mean of each transect
@@ -148,28 +149,77 @@ head(f.cast)
 #dcast can find the function of the variable that you isolate, it finds the function 
 #using fun.aggregate and then puts the format back into wide rather than long
 
+
+#melt and dcast review
+f.smelt<-melt(data = fs, id.vars = c("tid", "area_fac", "depth_fac", "parcel.id"), measure.vars = c("parcel.length.m"), value.name = c("numbers"))
+#value.name not value.vars actually converts it to numbers are the designated coln
+head(f.smelt)
+d.cast<-dcast(data= f.smelt, formula = tid~variable, value.var = c("numbers"), fun.aggregate = mean)
+head(d.cast)
+
+#isolated that parcel length.m that was changed in melt function and isolated it again
+#to get a wide not long (colum not row of parcel length m)
+#melt question
+library(nutshell)
+b.d.<-data("batting.2008")
+#using melt team Id, melt id.vars quantitiave, measure vars are qualitatiive , value.vars is the colmn you name it
+#
+
+
+
 #duplicate and removing duplicates() (2-3?)
+#remving duplicates ----
+library(tidyverse)
+head(fs)
+o1 <- fs[1,]
+head(o1)
+o2 <-fs[1,]
+o3 <- fs[1,]
+o4 <- fs[2:10,]
+head(o4)
+o <- rbind(o1, o2, o3, o4)
+o
+head(o)
+#there are duplicates needed to get rid of 
+#now the first 3 rows are duplicates
+no.dups <- o[!duplicated(o),]
+head(no.dups)
 
+dups <- o[duplicated(o),]
+head(dups)
+dups
 
-
+no.dups2 <- o [!duplicated(o$parcel.density.m3), ]
+head(no.dups2)
 
 
 #assec and descend(1) (3-4)
 #arrange function
-attach(mtcars)
+
+mtcars
 #sort by mpg, order and range
 nd <- mtcars [order(mpg), ]
-nd
+head(nd)
 #largest to smallest in mpg
 #uaing the arrange function
-nd.arrange <-arrange(.data = mtcars, mpg)
-nd.arrange
+nd.arrange <-arrange(.data = nd, mpg)
+nd.arrange2<-arrange(.data = nd, cyl)
+head(nd.arrange)
+head(nd.arrange2)
 #creates the same
-nd.arrange.desc<-arrange(.data = mtcars, desc(mpg))
-nd.arrange.desc
-nd.m.c<-arrange(.data = mtcars, mpg, cyl)
-nd.m.c.desc<-arrange(.data = mtcars, mpg, desc(cyl))
-nd.m.c.desc
+nd.arrange.3<-arrange(.data=mtcars, desc(mpg))
+nd.arrange.desc<-arrange(.data = nd, desc(mpg))
+nd.arrange.acen<-arrange(.data = nd, asce(mpg))
+head(nd.arrange.desc)
+head(nd.arrange.3)
+nd.m.c<-arrange(.data =nd , mpg, cyl)
+nd.m.c.desc<-arrange(.data = nd, mpg, desc(cyl))
+nd.m.c.desc.2<-arrange(.data = nd, desc(cyl))
+nd.n.mdecs<-arrange(.data = nd, desc(mpg), desc(cyl))
+#only do one
+head(nd.m.c.desc)
+head(nd.m.c.desc.2)
+head(nd.n.mdecs)
 #descending for cyl
 
 
@@ -237,6 +287,7 @@ head(merge.f.2)
 
               
 #6-9 review all data above, and redo the HW4 if time? otherwise finish on Monday
+
 
 
 
