@@ -158,10 +158,113 @@ five.num.pd<-f.s.2%>%group_by(transect.id, parcel.id)%>%summarise(min = min(parc
 head(five.num.pd)
 
 
-#melt and dcat
+#melt and dcast
+library(reshape2)
+f.s.2<-f.s1[,c("transect.id", "parcel.id", "parcel.density.m3", "parcel.length.m", "area_fac", "depth_fac")]
+#melt(data= df , id.vars =c("transect.id", "parcel.id", "parcel.density.m3", "area_fac"), measure.vars=c("parcel.density.length", "parcel.density.length"), value.names = c("numbers"))
+
+melt.f.s<-melt(data = f.s.2, id.vars = c("transect.id", "parcel.id", "parcel.density.m3", "area_fac"), measure.vars = c("parcel.length.m", "parcel.length.m"), value.name = c("numbers"))
+head(melt.f.s)
+
+#long to wide-dcast
+dcastf.s<-dcast(data = melt.f.s, formula = transect.id~variable, value.var = c("numbers"), fun.aggregate = mean)
+#need to make sure you use the object assigned to the melt question
+head(dcastf.s)
+
+#melt and cast again
+#under reshape2
+#object<-melt(data=dataframe, id.vars= c("","","",""keeping), measure.vars= c("things melting"), value.vars= c("new namefor melted data"))
+#dcast- long to wide
+#object name<-dcast(data=melt dataframe, formula = transect.id~variable- created this in melt, value.var= c("new name created"), fun.aggregate= function parameter)
+
+
 #subset and filter (dpylr)
+f.s.2<-f.s1[,c("transect.id", "parcel.id", "parcel.density.m3", "parcel.length.m", "area_fac", "depth_fac")]
+head(f.s.2)
+#finding the data where depth fac is equal to Deep, area fac is equal to West and parcel is is equal to 1
+d1<-f.s.2[which(f.s.2$depth_fac == "Deep" & f.s.2$area_fac == "West" & f.s.2$parcel.id ==1 ),]
+head(d1)
+#subset data where depth is shallow, area is east, and parcel id is 2
+d2<-f.s.2[which(f.s.2$depth_fac == "Shallow" & f.s.2$area_fac == "East" & f.s.2$parcel.id == 2),]
+d3<-rbind(d1, d2)
+head(d3)
+
+#subsetting
+m5<-subset(x=f.s.2, depth_fac =="Deep", select = c("transect.id", "area_fac"))
+head(m5)
+m6<-subset(x=f.s.2, depth_fac == "Deep", select = c("parcel.id", "depth_fac", "parcel.length.m"))
+m7<-cbind(m5, m6)
+head(m7)
+#found
+
+#filter
+library(dplyr)
+#filtering of the depth_fac colm is deep
+filter1<-filter(.data = f.s.2, depth_fac == "Deep")
+head(filter1)
+filter2<-filter(.data = f.s.2, area_fac == "West")
+head(filter2)
+mergef<-merge(filter1, filter2)
+head(mergef)
+
 #time
+vf<-read.table(file='ISIIS201405281124.txt', sep="\t", skip=10, header = TRUE, fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE, quote = "\"", check.names = FALSE, encoding = "UTF-8", na.strings = "9999.99")
+#"\t" tab deliminated #string as factors are false dont want it to be factor data 
+date<-scan(file = 'ISIIS201405281124.txt', what = "character",skip = 1, nlines = 1, quiet = TRUE)
+date4<-date[2]
+date4
+library(stringr)
+#str_sub isolates them by location in a string
+day<-str_sub(string = date4, start = 4, end = 5)
+day
+month<-str_sub(string = date4, start = 1, end = 2)
+month
+year<-str_sub(string = date4, start = 7, end = 8)
+year
+
+#dateTime
+vf$Time<-as.numeric(str_sub(vf$Time, 1, 2))
+vf$Time
+vf<-read.table(file='ISIIS201405281124.txt', sep="\t", skip=10, header = TRUE, fileEncoding = "ISO-8859-1", stringsAsFactors = FALSE, quote = "\"", check.names = FALSE, encoding = "UTF-8", na.strings = "9999.99")
+head(vf)
+library(stringr)
+vf$hour<-as.numeric(str_sub(vf$Time, start = 1, end = 2))
+vf$mins<-as.numeric(str_sub(vf$Time, start = 4, end = 5))
+head(vf$mins)
+vf$seconds<-as.numeric(str_sub(vf$Time, start=7, end = 11))
+head(vf$seconds)
+vf$time<-str_c(vf$hour, vf$mins,vf$seconds, sep=":")
+vf$date<-str_c(vf$month, vf$day, vf$year, sep = "/")
+
+
 #ascend and descend
-#duplicates and rbind, cbind
+attach(mtcars)
+#need to attach
+order.c<- mtcars[order(mpg),]
+head(order.c)
+#order said data
+#arrange data
+arr.cars<-arrange(.data = order.c, desc(cyl))
+head(arr.cars)
+
+fish.order<-f.s.2[order(f.s.2$parcel.length.m),]
+fish.arrange<-arrange(.data = f.s.2, desc(f.s.2$parcel.length.m))
+head(fish.arrange)
+#need to isolate that 
+
+
+#duplicates and rbind
+#already subsetting
+p1<-f.s.2[1,]
+p2<-f.s.2[1,]
+p3<-f.s.2[1,]
+p4<-f.s.2[2:6,]
+p5<-rbind(p1, p2, p3, p4)
+head(p5)
+
+no.dups.p5<-p5[!duplicated(p5),]
+head(no.dups.p5)
+#gets rid of the dupliates
+
 
 
