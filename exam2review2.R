@@ -158,4 +158,10 @@ five.num.pd<-f.s.2%>%group_by(transect.id, parcel.id)%>%summarise(min = min(parc
 head(five.num.pd)
 
 
+#melt and dcat
+#subset and filter (dpylr)
+#time
+#ascend and descend
+#duplicates and rbind, cbind
+
 
